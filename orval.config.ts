@@ -19,7 +19,6 @@ export default defineConfig({
         query: {
           useQuery: true,
           useInfinite: true,
-          useInfiniteQueryParam: "nextId",
           options: {
             staleTime: 10000,
           },
