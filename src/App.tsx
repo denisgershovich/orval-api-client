@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { InfiniteTable } from "./components/InfiniteTable";
-import type { MRT_ColumnDef } from "material-react-table";
+import type { MRT_ColumnDef, MRT_TableOptions } from "material-react-table";
 import AXIOS_INSTANCE from "./lib/axios/axiosClient";
 import { useMemo } from "react";
 
@@ -33,6 +33,21 @@ function App() {
     [data],
   );
 
+  const handleCreateProduct: MRT_TableOptions<Product>["onCreatingRowSave"] =
+    async ({ values, table }) => {
+      //validate
+      // const newValidationErrors = validateUser(values);
+      // if (Object.values(newValidationErrors).some((error) => error)) {
+      //   setValidationErrors(newValidationErrors);
+      //   return;
+      // }
+
+      //if passed
+      // setValidationErrors({});
+      // await createUser(values);
+      table.setCreatingRow(null); //exit creating mode
+    };
+
   return (
     <InfiniteTable
       data={flatData}
@@ -41,6 +56,34 @@ function App() {
       isError={isError}
       isFetching={isFetching}
       isLoading={isLoading}
+      createDisplayMode="row"
+      editDisplayMode="row"
+      enableEditing
+      onCreatingRowSave={handleCreateProduct}
+      // onCreatingRowCancel={() => setValidationErrors({})}
+      // onEditingRowCancel={() => setValidationErrors({})}
+      // onEditingRowSave={handleUpdateProduct}
+      renderRowActions={({ table, row }) => (
+        <>
+          {" "}
+          <button onClick={() => table.setEditingRow(row)}>Edit</button>
+          <button
+            onClick={() => {
+              if (
+                window.confirm("Are you sure you want to delete this product?")
+              ) {
+                // deleteUser(row.original.id);
+              }
+            }}>
+            Delete
+          </button>
+        </>
+      )}
+      renderTopToolbarCustomActions={({ table }) => (
+        <button onClick={() => table.setCreatingRow(true)}>
+          Add New Product
+        </button>
+      )}
     />
   );
 }
