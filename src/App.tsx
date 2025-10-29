@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { UserTable } from "./components/UserTable";
+import { ProductsTable } from "./components/InfiniteTable";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <UserTable />
+      <ProductsTable />
     </QueryClientProvider>
   );
 }
